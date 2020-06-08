@@ -14,7 +14,7 @@ def preprocess(download_path):
     # sort the dataframe
     data.sort_values("SYMBOL \n", axis = 0, ascending = True, inplace = True, na_position ='last') 
     data.reset_index(drop=True, inplace=True)
-    data.to_csv('./databases/final_data.csv', index = False)    
+    data.to_csv('final_data.csv', index = False)    
     
 
 
