@@ -2,8 +2,9 @@
 Python script to extract real-time csv from the NSE official website 
 
 ## Authors
-* Abhishek Agarwal 
-* Hritwik Goklaney
+* [Abhishek Agarwal](https://github.com/abhiagarwal18)
+
+* [Hritwik Goklaney](https://github.com/hritwik21)
 
 
 # Incremental Database
