@@ -5,6 +5,7 @@ import glob
 import os
 import time
 from csv import reader
+
 #driver = webdriver.Chrome(ChromeDriverManager().install())
 
 chrome_options = webdriver.ChromeOptions()
@@ -63,8 +64,11 @@ combined_csv = pd.concat(dfs, ignore_index=True)
 combined_csv.columns=combined_csv.columns.str.strip()
 combined_csv = combined_csv.sort_values(["SYMBOL"], ascending=True)
 
-#export to csv
-combined_csv.to_csv("Insider.csv", index = False)
+
+combined_csv = combined_csv[['SYMBOL', 'COMPANY',  'NAME OF THE ACQUIRER/DISPOSER', 'CATEGORY OF PERSON', '% SHAREHOLDING (PRIOR)', 'NO. OF SECURITIES (ACQUIRED/DISPLOSED)', 'VALUE OF SECURITY (ACQUIRED/DISPLOSED)', 'ACQUISITION/DISPOSAL TRANSACTION TYPE', 'TYPE OF SECURITY (POST)', 'NO. OF SECURITY (POST)',  'MODE OF ACQUISITION']]
+combined_csv.to_csv('final_historical_data.csv', index = False)    
+
+
 
 
 
