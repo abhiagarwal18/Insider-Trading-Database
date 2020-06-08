@@ -1,10 +1,25 @@
-# Insider-Trading-Database
-Python script to extract real-time csv from the NSE official website 
+# Historical Trading Database
 
-1.) At first, in order to download the historical data, first remove all the csv files( starting from - "CF-Insider-Trading-equities-* though it is uneccessary).
+Python script to extract historical trading from the NSE official website 
 
-2.) After that, it iterates over the EQUITY_L file and extracts the symbol name and downloads data for all those companies.
+## Requirements ##
+A virtual environment with the following packages installed : 
 
-3.)If the file is empty, ignore it. Otherwise, add it to the list and finally concat them using pandas(sorting based on SYMBOL as of now).
+* pandas
+* os
+* selenium
+* shutil
+* glob
+* time
 
-4.) File Insider.csv contains the historical data.
+## Usage ##
+
+* Enter the path to the directory (the same one having the python codes) for downloading the csv files
+* Download and unpack the chromedriver in the same directory and enter its path in the corresponding variable
+* run the "getHistoricalData.py" file using the command 
+
+_python3 getHistoricalData.py_ 
+
+* the final csv file will be saved as "final_historical_data.csv" 
+
+
