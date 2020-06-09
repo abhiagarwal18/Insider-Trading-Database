@@ -57,7 +57,7 @@ for filename in all_filenames:
         f = pd.read_csv(filename)
         if f.empty == False :
         	f.columns = f.columns.str.strip()
-        	dfs.append(f.iloc[:,0:-15])
+        	dfs.append()
 
 combined_csv = pd.concat(dfs, ignore_index=True)
 
