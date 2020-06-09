@@ -9,7 +9,7 @@ from csv import reader
 #driver = webdriver.Chrome(ChromeDriverManager().install())
 
 chrome_options = webdriver.ChromeOptions()
-prefs = {'download.default_directory' : 'C:\\Users\\hritw\\Desktop\\William O Neil\\Insider-Trading-Database-master\\Insider-Trading-Database-master'}
+prefs = {'download.default_directory' : 'C:\\Users\\hritw\\Desktop\\Insider-Trading-Database\\historical data'}
 chrome_options.add_experimental_option('prefs', prefs)
 
 
@@ -19,7 +19,7 @@ driver = webdriver.Chrome(chrome_path, options=chrome_options)
 
 
 extension = 'csv'
-path = "C:\\Users\\hritw\\Desktop\\William O Neil\\Insider-Trading-Database-master\\Insider-Trading-Database-master"
+path = "C:\\Users\\hritw\\Desktop\\Insider-Trading-Database\\historical data"
 
 for filename in glob.glob(os.path.join(path,"CF-Insider-Trading-equities-*.{}").format(extension)):
    os.remove(filename) 
@@ -44,7 +44,7 @@ with open(company_list, 'r') as read_obj:
     			break
 
 #chdir(path)
-time.sleep(500)
+time.sleep(100)
 all_filenames = [i for i in glob.glob(os.path.join(path,"CF-Insider-Trading-equities-*.{}").format(extension))]
 
 #original_file = "C:\\Users\\hritw\\Desktop\\William O Neil\\Insider-Trading-Database-master\\Insider-Trading-Database-master\\Historical.csv"
@@ -57,7 +57,7 @@ for filename in all_filenames:
         f = pd.read_csv(filename)
         if f.empty == False :
         	f.columns = f.columns.str.strip()
-        	dfs.append()
+        	dfs.append(f)
 
 combined_csv = pd.concat(dfs, ignore_index=True)
 
