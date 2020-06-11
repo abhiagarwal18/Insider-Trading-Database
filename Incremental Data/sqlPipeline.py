@@ -16,7 +16,7 @@ def cleanerSaver(data):
     print(data.info())
     
     data['BROADCASTE TIME'] = pd.to_datetime(data['BROADCASTE TIME'],format= '%H:%M' ).dt.time
-
+    data.index.name = 'index'
     data.to_csv('final_database.csv')
 
 ''' testing run
