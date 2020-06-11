@@ -5,6 +5,7 @@ import glob
 import os
 import time
 from csv import reader
+from sqlPipeline import cleanerSaver
 
 #driver = webdriver.Chrome(ChromeDriverManager().install())
 
@@ -66,7 +67,10 @@ combined_csv = combined_csv.sort_values(["SYMBOL"], ascending=True)
 
 
 combined_csv = combined_csv[['SYMBOL', 'COMPANY',  'NAME OF THE ACQUIRER/DISPOSER', 'CATEGORY OF PERSON', '% SHAREHOLDING (PRIOR)', 'NO. OF SECURITIES (ACQUIRED/DISPLOSED)', 'VALUE OF SECURITY (ACQUIRED/DISPLOSED)', 'ACQUISITION/DISPOSAL TRANSACTION TYPE', 'TYPE OF SECURITY (POST)', 'NO. OF SECURITY (POST)',  'MODE OF ACQUISITION', 'BROADCASTE DATE AND TIME']]
-combined_csv.to_csv('final_historical_data.csv', index = False)    
+
+
+cleanerSaver(combined_csv)
+
 
 
 

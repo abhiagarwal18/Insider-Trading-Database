@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 import glob
-
+from sqlPipeline import cleanerSaver
 
 def preprocess(download_path):
     path = download_path
@@ -14,8 +14,8 @@ def preprocess(download_path):
     data = data[['SYMBOL \n', 'COMPANY \n',  'NAME OF THE ACQUIRER/DISPOSER \n', 'CATEGORY OF PERSON \n', '% SHAREHOLDING (PRIOR) \n', 'NO. OF SECURITIES (ACQUIRED/DISPLOSED) \n', 'VALUE OF SECURITY (ACQUIRED/DISPLOSED) \n', 'ACQUISITION/DISPOSAL TRANSACTION TYPE \n', 'TYPE OF SECURITY (POST) \n', 'NO. OF SECURITY (POST) \n',  'MODE OF ACQUISITION \n','BROADCASTE DATE AND TIME \n']]
     # sort the dataframe
     data.sort_values("SYMBOL \n", axis = 0, ascending = True, inplace = True, na_position ='last') 
-    data.reset_index(drop=True, inplace=True)
-    data.to_csv('final_data.csv', index = False)    
+    data.reset_index(drop=True, inplace=True)  
+    cleanerSaver(data) 
     
 
 
