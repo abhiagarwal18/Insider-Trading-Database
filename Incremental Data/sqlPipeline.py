@@ -10,13 +10,13 @@ def cleanerSaver(data):
             item_v = item
         temp.append(item_v)
     data.loc[:, 'NO. OF SECURITY (POST) \n'] = temp 
-
+'''
     data['BROADCASTE DATE \n'], data['BROADCASTE TIME \n'] = data['BROADCASTE DATE AND TIME \n'].str.split(' ', 1).str
     data.drop(['BROADCASTE DATE AND TIME \n'], axis = 1, inplace = True) 
     print(data.info())
     
     data['BROADCASTE TIME'] = pd.to_datetime(data['BROADCASTE TIME'],format= '%H:%M' ).dt.time
-    data.index.name = 'index'
+    data.index.name = 'index''''
     data.to_csv('final_database.csv')
 
 ''' testing run
