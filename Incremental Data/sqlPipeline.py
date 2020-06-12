@@ -22,7 +22,7 @@ def cleanerSaver(data):
     data.drop(data.index[deleterows], inplace=True)
     data.reset_index( inplace=True)
     data.index.name = 'Index'
-    data.to_csv('final_data_Jun12_5pm.csv')
+    data.to_csv('final_data_Jun12_7pm.csv', index=False)
 '''
     data['BROADCASTE DATE \n'], data['BROADCASTE TIME \n'] = data['BROADCASTE DATE AND TIME \n'].str.split(' ', 1).str
     data.drop(['BROADCASTE DATE AND TIME \n'], axis = 1, inplace = True) 
@@ -33,5 +33,5 @@ def cleanerSaver(data):
     
 
 #testing run
-data = pd.read_csv('./final_database.csv')
-cleanerSaver(data)
+# data = pd.read_csv('./tester.csv')
+# cleanerSaver(data)
