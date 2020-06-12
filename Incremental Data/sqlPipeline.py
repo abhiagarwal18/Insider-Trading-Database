@@ -10,7 +10,9 @@ def cleanerSaver(data):
             item_v = item
         temp.append(item_v)
     data.loc[:, 'NO. OF SECURITY (POST) \n'] = temp 
-    data.to_csv('final_database.csv', index = False)
+    data.drop_duplicates()
+    data.index.name = 'index'
+    data.to_csv('final_database_Jun12.csv')
 '''
     data['BROADCASTE DATE \n'], data['BROADCASTE TIME \n'] = data['BROADCASTE DATE AND TIME \n'].str.split(' ', 1).str
     data.drop(['BROADCASTE DATE AND TIME \n'], axis = 1, inplace = True) 
@@ -20,6 +22,6 @@ def cleanerSaver(data):
     data.index.name = 'index' '''
     
 
-# testing run
-#data = pd.read_csv('./final_data.csv')
-#cleanerSaver(data)
+#testing run
+data = pd.read_csv('./final_database.csv')
+cleanerSaver(data)
