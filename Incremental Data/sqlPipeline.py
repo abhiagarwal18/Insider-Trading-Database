@@ -3,18 +3,18 @@ from sqlPipeline import createSQLdatabase
 def cleanerSaver(data):
     temp = []
     #print(data.columns)
-    for item in data['NO. OF SECURITY (POST) \n']:
+    for item in data['NO. OF SECURITY (POST)']:
         if (str(item)) == 'Nil':
             item_v = str(0)
         else:
             item_v = item
         temp.append(item_v)
-    data.loc[:, 'NO. OF SECURITY (POST) \n'] = temp 
+    data.loc[:, 'NO. OF SECURITY (POST)'] = temp 
     data.drop_duplicates()
     
     deleterows = []
     for index, row in data.iterrows():
-        if(row['% SHAREHOLDING (PRIOR) \n']==0 and row['VALUE OF SECURITY (ACQUIRED/DISPLOSED) \n']== '-' and row['ACQUISITION/DISPOSAL TRANSACTION TYPE \n']== '-' ):
+        if(row['% SHAREHOLDING (PRIOR)']==0 and row['VALUE OF SECURITY (ACQUIRED/DISPLOSED)']== '-' and row['ACQUISITION/DISPOSAL TRANSACTION TYPE']== '-' ):
             deleterows.append(index)
         else :
             pass
