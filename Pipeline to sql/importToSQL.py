@@ -2,7 +2,7 @@ import pandas as pd
 import pyodbc
 
 # Import CSV
-df = pd.read_csv (r'C:\Users\hritw\Desktop\Insider-Trading-Database\historical data\final_data.csv',index_col=False)
+df = pd.read_csv (r'C:\Users\hritw\Desktop\Insider-Trading-Database\historical data\final_data.csv')
 print(df.iloc[0])
 
 # Connect to SQL Server
@@ -14,6 +14,7 @@ cursor = conn.cursor()
 
 # Create Table
 cursor.execute("""CREATE TABLE [dbo].[IH] (
+        [INDEX] int,
 [SYMBOL] varchar(50),
 [COMPANY] varchar(150),
 [NAME OF THE ACQUIRER DISPOSER] varchar(150),
