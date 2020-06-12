@@ -1,5 +1,5 @@
 import pandas as pd
-    
+from importToSQL import createSQLdatabase  
 def cleanerSaver(data):
     temp = []
     for item in data['NO. OF SECURITY (POST)']:
@@ -22,6 +22,7 @@ def cleanerSaver(data):
     data.reset_index( inplace=True)
     data.index.name = 'Index'
     data.to_csv('final_data_Jun12_7pm.csv', index = False)
+    createSQLdatabase(data)
 '''
     data['BROADCASTE DATE'], data['BROADCASTE TIME'] = data['BROADCASTE DATE AND TIME'].str.split(' ', 1).str
     data.drop(['BROADCASTE DATE AND TIME'], axis = 1, inplace = True) 

@@ -1,5 +1,5 @@
 import pandas as pd
-
+from sqlPipeline import createSQLdatabase
 def cleanerSaver(data):
     temp = []
     #print(data.columns)
@@ -23,6 +23,7 @@ def cleanerSaver(data):
     data.reset_index( inplace=True)
     data.index.name = 'Index'
     data.to_csv('final_data_Jun12_7pm.csv', index=False)
+    createSQLdatabase(data)
 '''
     data['BROADCASTE DATE \n'], data['BROADCASTE TIME \n'] = data['BROADCASTE DATE AND TIME \n'].str.split(' ', 1).str
     data.drop(['BROADCASTE DATE AND TIME \n'], axis = 1, inplace = True) 
