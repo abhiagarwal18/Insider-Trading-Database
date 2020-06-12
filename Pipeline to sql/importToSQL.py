@@ -14,7 +14,7 @@ cursor = conn.cursor()
 
 # Create Table
 cursor.execute("""CREATE TABLE [dbo].[IH] (
-        [INDEX] int,
+        [Index] int,
 [SYMBOL] varchar(50),
 [COMPANY] varchar(150),
 [NAME OF THE ACQUIRER DISPOSER] varchar(150),

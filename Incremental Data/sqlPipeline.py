@@ -11,7 +11,7 @@ def cleanerSaver(data):
         temp.append(item_v)
     data.loc[:, 'NO. OF SECURITY (POST) \n'] = temp 
     data.drop_duplicates()
-    data.index.name = 'index'
+    data.index.name = 'Index'
     data.to_csv('final_database_Jun12.csv')
 '''
     data['BROADCASTE DATE \n'], data['BROADCASTE TIME \n'] = data['BROADCASTE DATE AND TIME \n'].str.split(' ', 1).str
