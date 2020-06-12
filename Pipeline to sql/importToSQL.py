@@ -14,7 +14,7 @@ conn = pyodbc.connect('Driver={SQL Server};'
 cursor = conn.cursor()
 
 # Create Table
-cursor.execute("""CREATE TABLE [dbo].[IH] (
+cursor.execute("""CREATE TABLE [dbo].[InsiderTrading] (
 [Index] varchar(50),
 [SYMBOL] varchar(50),
 [COMPANY] varchar(150),
@@ -35,7 +35,7 @@ cursor.execute("""CREATE TABLE [dbo].[IH] (
 for row in df.itertuples(index = False):
 	print(row[0])
 	print(row[12])
-	cursor.execute('''INSERT INTO InsiderDatabase.dbo.IH ([Index],[SYMBOL],[COMPANY],[NAME OF THE ACQUIRER DISPOSER],[CATEGORY OF PERSON],[% SHAREHOLDING (PRIOR)],[NO  OF SECURITIES (ACQUIRED DISPLOSED)],[VALUE OF SECURITY (ACQUIRED DISPLOSED)],[ACQUISITION DISPOSAL TRANSACTION TYPE],[TYPE OF SECURITY (POST)],[NO  OF SECURITY (POST)],[MODE OF ACQUISITION],[BROADCASTE DATE AND TIME])
+	cursor.execute('''INSERT INTO InsiderDatabase.dbo.InsiderTrading ([Index],[SYMBOL],[COMPANY],[NAME OF THE ACQUIRER DISPOSER],[CATEGORY OF PERSON],[% SHAREHOLDING (PRIOR)],[NO  OF SECURITIES (ACQUIRED DISPLOSED)],[VALUE OF SECURITY (ACQUIRED DISPLOSED)],[ACQUISITION DISPOSAL TRANSACTION TYPE],[TYPE OF SECURITY (POST)],[NO  OF SECURITY (POST)],[MODE OF ACQUISITION],[BROADCASTE DATE AND TIME])
 		VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
                 ''', 
                row[0],
