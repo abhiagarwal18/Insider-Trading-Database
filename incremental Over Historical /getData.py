@@ -57,10 +57,7 @@ driver.get(url)
 time.sleep(50)
 all_filenames = [i for i in glob.glob(os.path.join(path,"CF-Insider-Trading-equities-*.{}").format(extension))]
 
-#refers to the historical data file downloaded 
-original_file = "PATH4"
-
-
+#Dowloading the data
 dfs = []
 for filename in all_filenames:
         f = pd.read_csv(filename)
