@@ -1,3 +1,7 @@
+#Primary file :
+#To be used to append incremental data to the historical database in the SQL table 
+
+
 import pandas as pd
 from selenium import webdriver
 import glob
@@ -5,52 +9,70 @@ import os
 import time
 import pyodbc
 
-#driver = webdriver.Chrome(ChromeDriverManager().install())
+''' LIST OF PATHS TO BE ADDED: 
+PATH1. prefs - download directory
+eg.
+/Users/abhishek/Desktop/Insider-Trading-Database/incremental Over Historical  (MAC/LINUX)
+C:\\Users\\hritw\\Desktop\\incremental Over Historical\\incremental Over Historical (WINDOWS)
+
+PATH2. chrome_path - chromedriver path
+eg.
+/Users/abhishek/Desktop/William-O-Neal-Data-Analytics/chromedriver
+C:\\Users\\hritw\\Downloads\\chromedriver_win32\\chromedriver.exe
+
+PATH3. path - directory with the codes; same as the path in 1.
+eg.
+/Users/abhishek/Desktop/Insider-Trading-Database/incremental Over Historical 
+C:\\Users\\hritw\\Desktop\\incremental Over Historical\\incremental Over Historical
+
+PATH4. original file - downloadDirectory/filename
+eg. 
+C:\\Users\\hritw\\Desktop\\incremental Over Historical\\incremental Over Historical\\Insider_historical.csv
+/Users/abhishek/Desktop/Insider-Trading-Database/incremental Over Historical/Insider_historical.csv
+'''
+
+
+#chromedriver details
 
 chrome_options = webdriver.ChromeOptions()
-prefs = {'download.default_directory' : 'C:\\Users\\hritw\\Desktop\\William O Neil\\Insider-Trading-Database-master\\Insider-Trading-Database-master'}
+prefs = {'download.default_directory' : 'PATH1'}
 chrome_options.add_experimental_option('prefs', prefs)
-chrome_path = "C:\\Users\\hritw\\Downloads\\chromedriver_win32\\chromedriver.exe"
-
+chrome_path = "PATH2"
 driver = webdriver.Chrome(chrome_path, options=chrome_options)
 
-
+#removing redundant files
 extension = 'csv'
-path = "C:\\Users\\hritw\\Desktop\\William O Neil\\Insider-Trading-Database-master\\Insider-Trading-Database-master"
+path = "PATH1"
 
 
 for filename in glob.glob(os.path.join(path,"CF-Insider-Trading-equities-*.{}").format(extension)):
    os.remove(filename) 
 
-
+#downloading the incremental files
 url = "https://www.nseindia.com/api/corporates-pit?index=equities&csv=true"
 driver.get(url)
 
-time.sleep(5)
+time.sleep(50)
 all_filenames = [i for i in glob.glob(os.path.join(path,"CF-Insider-Trading-equities-*.{}").format(extension))]
-original_file = "C:\\Users\\hritw\\Desktop\\William O Neil\\Insider-Trading-Database-master\\Insider-Trading-Database-master\\Insider_historical.csv"
 
+#refers to the historical data file downloaded 
+original_file = "PATH4"
 
-#list_columns = ['SYMBOL',"COMPANY", "NAME OF THE ACQUIRER/DISPOSER", "CATEGORY OF PERSON","TYPE OF SECURITY (PRIOR)","NO. OF SECURITY (PRIOR)", "% SHAREHOLDING (PRIOR)","NO. OF SECURITIES (ACQUIRED/DISPLOSED)","VALUE OF SECURITY (ACQUIRED/DISPLOSED)","ACQUISITION/DISPOSAL TRANSACTION TYPE","TYPE OF SECURITY (POST)","NO. OF SECURITY (POST)","% POST","DATE OF ALLOTMENT/ACQUISITION FROM","DATE OF ALLOTMENT/ACQUISITION TO","DATE OF INITMATION TO COMPANY","MODE OF ACQUISITION","EXCHANGE"]
-#combine all files in the list
 
 dfs = []
 for filename in all_filenames:
         f = pd.read_csv(filename)
         if f.empty == False :
         	f.columns = f.columns.str.strip()
-        	dfs.append()
+        	dfs.append(f)
 
-o = pd.read_csv(original_file)
-o.columns = o.columns.str.strip()
-dfs.append(o)
-        
-#concat
+#extracting the columns
 data = pd.concat(dfs, ignore_index=True)
 data.columns=data.columns.str.strip()
+data = data[['SYMBOL', 'COMPANY',  'NAME OF THE ACQUIRER/DISPOSER', 'CATEGORY OF PERSON', '% SHAREHOLDING (PRIOR)', 'NO. OF SECURITIES (ACQUIRED/DISPLOSED)', 'VALUE OF SECURITY (ACQUIRED/DISPLOSED)', 'ACQUISITION/DISPOSAL TRANSACTION TYPE', 'TYPE OF SECURITY (POST)', 'NO. OF SECURITY (POST)',  'MODE OF ACQUISITION', 'BROADCASTE DATE AND TIME']]
 data = data.sort_values(["SYMBOL"], ascending=True)
 
-
+#for handling Nil values as 0 
 temp = []
 for item in data['NO. OF SECURITY (POST)']:
 	if (str(item)) == 'Nil':
@@ -61,49 +83,17 @@ for item in data['NO. OF SECURITY (POST)']:
 data.loc[:, 'NO. OF SECURITY (POST)'] = temp 
 data.drop_duplicates()
 
-deleterows = []
-for index, row in data.iterrows():
-	if(row['% SHAREHOLDING (PRIOR)']==0 and row['VALUE OF SECURITY (ACQUIRED/DISPLOSED)']== '-' and row['ACQUISITION/DISPOSAL TRANSACTION TYPE']== '-' ):
-		deleterows.append(index)
-	else :
-		pass
-
-data.drop(data.index[deleterows], inplace=True)
-data.reset_index( inplace=True)
-data.index.name = 'Index'
-
-
-#export to csv
-#combined_csv.to_csv("IncrementalPlusHistory.csv", index = False)
-
+#SQL details
 conn = pyodbc.connect('Driver={SQL Server};'
                'Server=DESKTOP-OCIQVL0;'
                'Database=InsiderDatabase;'
                'Trusted_Connection=yes;')
 cursor = conn.cursor()
 
-# Create Table
-cursor.execute("""CREATE TABLE [dbo].[IH] (
-         [Index] int,
-[SYMBOL] varchar(50),
-[COMPANY] varchar(150),
-[NAME OF THE ACQUIRER DISPOSER] varchar(150),
-[CATEGORY OF PERSON] varchar(150),
-[% SHAREHOLDING (PRIOR)] float,
-[NO  OF SECURITIES (ACQUIRED DISPLOSED)] bigint,
-[VALUE OF SECURITY (ACQUIRED DISPLOSED)] float,
-[ACQUISITION DISPOSAL TRANSACTION TYPE] varchar(50),
-[TYPE OF SECURITY (POST)] varchar(50),
-[NO  OF SECURITY (POST)] bigint,
-[MODE OF ACQUISITION] varchar(50),
-[BROADCASTE DATE AND TIME] datetime
-)""")
-
-
-# Insert DataFrame to Table
-for row in data.itertuples():
+#Insert DataFrame to Table
+for row in data.itertuples(index=False):
          print(row[11])
-         cursor.execute('''INSERT INTO InsiderDatabase.dbo.IH ([SYMBOL],[COMPANY],[NAME OF THE ACQUIRER DISPOSER],[CATEGORY OF PERSON],[% SHAREHOLDING (PRIOR)],[NO  OF SECURITIES (ACQUIRED DISPLOSED)],[VALUE OF SECURITY (ACQUIRED DISPLOSED)],[ACQUISITION DISPOSAL TRANSACTION TYPE],[TYPE OF SECURITY (POST)],[NO  OF SECURITY (POST)],[MODE OF ACQUISITION],[BROADCASTE DATE AND TIME])
+         cursor.execute('''INSERT INTO InsiderDatabase.dbo.Insider ([SYMBOL],[COMPANY],[NAME OF THE ACQUIRER DISPOSER],[CATEGORY OF PERSON],[% SHAREHOLDING (PRIOR)],[NO  OF SECURITIES (ACQUIRED DISPLOSED)],[VALUE OF SECURITY (ACQUIRED DISPLOSED)],[ACQUISITION DISPOSAL TRANSACTION TYPE],[TYPE OF SECURITY (POST)],[NO  OF SECURITY (POST)],[MODE OF ACQUISITION],[BROADCASTE DATE AND TIME])
                VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
                ''',
          row[0], 
@@ -119,13 +109,6 @@ for row in data.itertuples():
          row[10],
          row[11]
          )
-
-#cursor.fast_executemany = True
-#for row_count in range(0, df.shape[0]):
-#   chunk = df.iloc[row_count:row_count + 1,:].values.tolist()
-#   tuple_of_tuples = tuple(tuple(x) for x in chunk)
-#   cursor.executemany("INSERT INTO InsiderDatabase.dbo.historical" + " ([SYMBOL],[COMPANY],[NAME OF THE ACQUIRER DISPOSER],[CATEGORY OF PERSON],[% SHAREHOLDING (PRIOR)],[NO  OF SECURITIES (ACQUIRED DISPLOSED)],[VALUE OF SECURITY (ACQUIRED DISPLOSED)],[ACQUISITION DISPOSAL TRANSACTION TYPE],[TYPE OF SECURITY (POST)],[NO  OF SECURITY (POST)],[MODE OF ACQUISITION],[BROADCASTE DATE AND TIME]) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",tuple_of_tuples)
-
 
 conn.commit()
 
