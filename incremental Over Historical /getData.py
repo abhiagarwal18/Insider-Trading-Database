@@ -29,6 +29,8 @@ PATH4. original file - downloadDirectory/filename
 eg. 
 C:\\Users\\hritw\\Desktop\\incremental Over Historical\\incremental Over Historical\\Insider_historical.csv
 /Users/abhishek/Desktop/Insider-Trading-Database/incremental Over Historical/Insider_historical.csv
+
+THE DETAILS REGARDING SQL SERVER-RELATED PATHS AND CONNECTIONS NEED TO BE UPDATED AS PER LOCAL/REMOTE SERVER
 '''
 
 
