@@ -5,7 +5,7 @@ import glob
 import os
 import time
 from csv import reader
-from importToSQL import createSQLdatabase  
+
 
 #driver = webdriver.Chrome(ChromeDriverManager().install())
 
@@ -58,7 +58,7 @@ for filename in all_filenames:
         f = pd.read_csv(filename)
         if f.empty == False :
         	f.columns = f.columns.str.strip()
-        	dfs.append(f.iloc[:,0:-10])
+        	dfs.append()
 
 data = pd.concat(dfs, ignore_index=True)
 
@@ -69,30 +69,9 @@ data = data.sort_values(["SYMBOL"], ascending=True)
 
 data = data[['SYMBOL', 'COMPANY',  'NAME OF THE ACQUIRER/DISPOSER', 'CATEGORY OF PERSON', '% SHAREHOLDING (PRIOR)', 'NO. OF SECURITIES (ACQUIRED/DISPLOSED)', 'VALUE OF SECURITY (ACQUIRED/DISPLOSED)', 'ACQUISITION/DISPOSAL TRANSACTION TYPE', 'TYPE OF SECURITY (POST)', 'NO. OF SECURITY (POST)',  'MODE OF ACQUISITION', 'BROADCASTE DATE AND TIME']]
 
-temp = []
-for item in data['NO. OF SECURITY (POST)']:
-	if (str(item)) == 'Nil':
-		item_v = str(0)
-	else:
-		item_v = item
-	temp.append(item_v)
-data.loc[:, 'NO. OF SECURITY (POST)'] = temp 
-data.drop_duplicates()
-
-deleterows = []
-for index, row in data.iterrows():
-	if(row['% SHAREHOLDING (PRIOR)']==0 and row['VALUE OF SECURITY (ACQUIRED/DISPLOSED)']== '-' and row['ACQUISITION/DISPOSAL TRANSACTION TYPE']== '-' ):
-		deleterows.append(index)
-	else :
-		pass
-
-data.drop(data.index[deleterows], inplace=True)
-data.reset_index( inplace=True)
-data.index.name = 'Index'
-createSQLdatabase(data)
 
 # #export to csv
-# combined_csv.to_csv("Insider.csv", index = False)
+data.to_csv("Insider_historical.csv", index = False)
 
 
 
