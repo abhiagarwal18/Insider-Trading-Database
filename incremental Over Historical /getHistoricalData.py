@@ -34,20 +34,24 @@ C:\\Users\\hritw\\Desktop\\incremental Over Historical\\incremental Over Histori
 
 #for chromedriver
 chrome_options = webdriver.ChromeOptions()
-prefs = {'download.default_directory' : 'PATH1'}
+prefs = {'download.default_directory' : '/Users/abhishek/Desktop/Insider-Trading-Database/incremental Over Historical '}
 chrome_options.add_experimental_option('prefs', prefs)
 
-chrome_path = "PATH2"
+
+chrome_path = "/Users/abhishek/Desktop/William-O-Neal-Data-Analytics/chromedriver"
 driver = webdriver.Chrome(chrome_path, options=chrome_options)
 
 #cleaning existing files
 extension = 'csv'
-path = "PATH3"
+path = "/Users/abhishek/Desktop/Insider-Trading-Database/incremental Over Historical "
 
 for filename in glob.glob(os.path.join(path,"CF-Insider-Trading-equities-*.{}").format(extension)):
    os.remove(filename) 
 
 company_list = (os.path.join(path,"EQUITY_L.{}").format(extension))
+
+
+
 
 #downloading historical data
 with open(company_list, 'r') as read_obj:
@@ -84,9 +88,12 @@ data.columns=data.columns.str.strip()
 data = data.sort_values(["SYMBOL"], ascending=True)
 data = data[['SYMBOL', 'COMPANY',  'NAME OF THE ACQUIRER/DISPOSER', 'CATEGORY OF PERSON', '% SHAREHOLDING (PRIOR)', 'NO. OF SECURITIES (ACQUIRED/DISPLOSED)', 'VALUE OF SECURITY (ACQUIRED/DISPLOSED)', 'ACQUISITION/DISPOSAL TRANSACTION TYPE', 'TYPE OF SECURITY (POST)', 'NO. OF SECURITY (POST)',  'MODE OF ACQUISITION', 'BROADCASTE DATE AND TIME']]
 
-
+data.reset_index( inplace=True)
+data.index.name = 'SINo'
+data.drop('index', axis=1, inplace=True)
+    
 #export to csv -- for the sake of use in the incremental data
-data.to_csv("Insider_historical.csv", index = False)
+data.to_csv("Insider_historical.csv")
 
 
 
