@@ -34,16 +34,16 @@ C:\\Users\\hritw\\Desktop\\incremental Over Historical\\incremental Over Histori
 
 #for chromedriver
 chrome_options = webdriver.ChromeOptions()
-prefs = {'download.default_directory' : '/Users/abhishek/Desktop/Insider-Trading-Database/incremental Over Historical '}
+prefs = {'download.default_directory' : 'C:\\Users\\hritw\\Desktop\\incremental Over Historical\\incremental Over Historical '}
 chrome_options.add_experimental_option('prefs', prefs)
 
 
-chrome_path = "/Users/abhishek/Desktop/William-O-Neal-Data-Analytics/chromedriver"
+chrome_path = "C:\\Users\\hritw\\Downloads\\chromedriver_win32\\chromedriver.exe"
 driver = webdriver.Chrome(chrome_path, options=chrome_options)
 
 #cleaning existing files
 extension = 'csv'
-path = "/Users/abhishek/Desktop/Insider-Trading-Database/incremental Over Historical "
+path = "C:\\Users\\hritw\\Desktop\\incremental Over Historical\\incremental Over Historical"
 
 for filename in glob.glob(os.path.join(path,"CF-Insider-Trading-equities-*.{}").format(extension)):
    os.remove(filename) 
